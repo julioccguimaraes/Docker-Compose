@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  db:
+    #image: mysqlcompose
+    build: ./mysql/
+    restart: always
+    env_file:
+      - ./config/db.env
+    ports:
+      - "3306:3306"
+    networks:
+      - dockercompose
+  backend:
+    depends_on:
+      - db
+    #image: flaskcompose
+    build: ./flask/
+    ports:
+      - "5000:5000"
+    restart: always
+    # fazendo isso, mapeamos o diretório do projeto e assim podemos editar arquivos on-the-fly, ou seja, com o container rodando
+    volumes:
+      - "C:\\Users\\julio\\curso\\docker\\compose\\projeto_bind_mount\\flask:/app" # pasta onde fica o projeto : workdir configurado no Dockfile
+    networks:
+      - dockercompose
+networks:
+  dockercompose:

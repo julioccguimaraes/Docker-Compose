@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  db: #container de mysql
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment: # está criando o banco
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: julio
+      MYSQL_PASSWORD: secret
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80" #8000 do pc e 80 internet
+    restart: always
+    environment: # está acessando o bd
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: julio
+      WORDPRESS_DB_PASSWORD: secret
+      WORDPRESS_DB_NAME: wordpress
+volumes:
+  db_data: {}
